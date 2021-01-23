@@ -42,8 +42,12 @@ public class NewsController {
 
     @PutMapping("/{id}")
     public News update(@RequestBody News news, @PathVariable Long id) {
-        newsRepository.findById(id).orElseThrow(() -> new NewsNotFoundException(id));
-        return newsRepository.save(news);
+        return newsRepository.findById(id).map(newsToUpdate -> {
+            newsToUpdate.setTitle(news.getTitle());
+            newsToUpdate.setDescription(news.getDescription());
+            newsToUpdate.setDate(news.getDate());
+            return newsRepository.save(newsToUpdate);
+        }).orElseThrow(() -> new NewsNotFoundException(id));
     }
 
     @DeleteMapping("/{id}")
