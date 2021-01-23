@@ -1,5 +1,6 @@
 package pe.robertem.example.newsapplication.controller;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,5 +44,10 @@ public class NewsController {
     public News update(@RequestBody News news, @PathVariable Long id) {
         newsRepository.findById(id).orElseThrow(() -> new NewsNotFoundException(id));
         return newsRepository.save(news);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        newsRepository.deleteById(id);
     }
 }
